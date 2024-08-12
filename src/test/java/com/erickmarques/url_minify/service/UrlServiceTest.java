@@ -3,6 +3,7 @@ package com.erickmarques.url_minify.service;
 import com.erickmarques.url_minify.controller.dto.MinifyUrlRequest;
 import com.erickmarques.url_minify.entity.Url;
 import com.erickmarques.url_minify.factory.MinifyUrlRequestFactory;
+import com.erickmarques.url_minify.factory.UrlFactory;
 import com.erickmarques.url_minify.repository.UrlRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Nested;
@@ -11,10 +12,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.net.URI;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 
@@ -70,5 +77,39 @@ class UrlServiceTest {
             var id = response.url().replace(BASE_URL, "");
             assertThat(id.length()).isBetween(MIN_ID_LENGTH, MAX_ID_LENGTH);
         }
+    }
+
+    @Nested
+    class Redirect {
+        @Test
+        void shouldRedirectToCorrectUrl() {
+            // Arrange
+            var url = UrlFactory.createUrlDefault();
+
+            when(urlRepository.findById(url.getId())).thenReturn(Optional.of(url));
+
+            // Act
+            var headers = urlService.redirect(url.getId());
+
+            // Assert
+            assertThat(headers.getLocation()).isEqualTo(URI.create(url.getFullUrl()));
+        }
+
+        @Test
+        void shouldThrowExceptionWhenUrlNotFound() {
+            // Arrange
+            var id = "nonexistentId";
+            when(urlRepository.findById(id)).thenReturn(Optional.empty());
+
+            // Act
+            ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+                urlService.redirect(id);
+            });
+
+            // Assert
+            assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+            assertThat(exception.getReason()).isEqualTo("Não existe URL para o ID informado!");
+        }
+
     }
 }

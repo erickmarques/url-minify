@@ -25,6 +25,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+/.idea/
 
 ### NetBeans ###
 /nbproject/private/
@@ -41,4 +42,5 @@ out/
 terraform.**
 .terraform.**
 .terraform/
+
 

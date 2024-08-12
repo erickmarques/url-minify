@@ -2,6 +2,7 @@ package com.erickmarques.url_minify.service;
 
 import com.erickmarques.url_minify.controller.dto.MinifyUrlRequest;
 import com.erickmarques.url_minify.entity.Url;
+import com.erickmarques.url_minify.factory.Constants;
 import com.erickmarques.url_minify.factory.MinifyUrlRequestFactory;
 import com.erickmarques.url_minify.factory.UrlFactory;
 import com.erickmarques.url_minify.repository.UrlRepository;
@@ -42,7 +43,6 @@ class UrlServiceTest {
 
     private static final int MIN_ID_LENGTH = 5;
     private static final int MAX_ID_LENGTH = 10;
-    private static final String BASE_URL = "http://localhost:8080/";
     private static final String ENDPOINT = "url-minify";
 
     @Nested
@@ -53,7 +53,7 @@ class UrlServiceTest {
         @Test
         void shouldMinifyUrl() {
             // Arrange
-            when(servletRequest.getRequestURL()).thenReturn(new StringBuffer(BASE_URL.concat(ENDPOINT)));
+            when(servletRequest.getRequestURL()).thenReturn(new StringBuffer(Constants.BASE_URL.concat(ENDPOINT)));
             when(urlRepository.existsById(anyString())).thenReturn(false);
 
             // Act
@@ -61,20 +61,20 @@ class UrlServiceTest {
 
             // Assert
             verify(urlRepository, times(1)).save(any(Url.class));
-            assertThat(response.url()).contains(BASE_URL);
+            assertThat(response.url()).contains(Constants.BASE_URL);
         }
 
         @Test
         void shouldGenerateUniqueId() {
             // Arrange
-            when(servletRequest.getRequestURL()).thenReturn(new StringBuffer(BASE_URL.concat(ENDPOINT)));
+            when(servletRequest.getRequestURL()).thenReturn(new StringBuffer(Constants.BASE_URL.concat(ENDPOINT)));
             when(urlRepository.existsById(anyString())).thenReturn(false);
 
             // Act
             var response = urlService.urlMinify(request, servletRequest);
 
             // Assert
-            var id = response.url().replace(BASE_URL, "");
+            var id = response.url().replace(Constants.BASE_URL, "");
             assertThat(id.length()).isBetween(MIN_ID_LENGTH, MAX_ID_LENGTH);
         }
     }

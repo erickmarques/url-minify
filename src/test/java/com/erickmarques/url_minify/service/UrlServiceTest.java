@@ -43,7 +43,6 @@ class UrlServiceTest {
 
     private static final int MIN_ID_LENGTH = 5;
     private static final int MAX_ID_LENGTH = 10;
-    private static final String ENDPOINT = "url-minify";
 
     @Nested
     class UrlMinify {
@@ -53,7 +52,7 @@ class UrlServiceTest {
         @Test
         void shouldMinifyUrl() {
             // Arrange
-            when(servletRequest.getRequestURL()).thenReturn(new StringBuffer(Constants.BASE_URL.concat(ENDPOINT)));
+            when(servletRequest.getRequestURL()).thenReturn(new StringBuffer(Constants.BASE_URL.concat(Constants.PATH_MINIFY)));
             when(urlRepository.existsById(anyString())).thenReturn(false);
 
             // Act
@@ -67,7 +66,7 @@ class UrlServiceTest {
         @Test
         void shouldGenerateUniqueId() {
             // Arrange
-            when(servletRequest.getRequestURL()).thenReturn(new StringBuffer(Constants.BASE_URL.concat(ENDPOINT)));
+            when(servletRequest.getRequestURL()).thenReturn(new StringBuffer(Constants.BASE_URL.concat(Constants.PATH_MINIFY)));
             when(urlRepository.existsById(anyString())).thenReturn(false);
 
             // Act

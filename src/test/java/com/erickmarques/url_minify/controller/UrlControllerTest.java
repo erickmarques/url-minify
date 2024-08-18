@@ -61,7 +61,7 @@ class UrlControllerTest {
             // Assert
             assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
             assertThat(result.getBody()).isNotNull();
-            assertThat(result.getBody().url()).isEqualTo(response.url());
+            assertThat(result.getBody().shortUrl()).isEqualTo(response.shortUrl());
         }
     }
 

@@ -7,7 +7,7 @@ public class MinifyUrlResponseFactory {
     public static MinifyUrlResponse createResponseDefault(){
         return MinifyUrlResponse
                 .builder()
-                .url(Constants.BASE_URL.concat("/").concat(Constants.ID))
+                .shortUrl(Constants.BASE_URL.concat("/").concat(Constants.ID))
                 .build();
     }
 }

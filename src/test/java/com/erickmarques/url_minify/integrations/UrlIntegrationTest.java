@@ -57,8 +57,8 @@ public class UrlIntegrationTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.url").isNotEmpty())
-                    .andExpect(jsonPath("$.url").value(response.url()));
+                    .andExpect(jsonPath("$.shortUrl").isNotEmpty())
+                    .andExpect(jsonPath("$.shortUrl").value(response.shortUrl()));
         }
 
         @Test

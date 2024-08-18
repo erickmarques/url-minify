@@ -60,7 +60,7 @@ class UrlServiceTest {
 
             // Assert
             verify(urlRepository, times(1)).save(any(Url.class));
-            assertThat(response.url()).contains(Constants.BASE_URL);
+            assertThat(response.shortUrl()).contains(Constants.BASE_URL);
         }
 
         @Test
@@ -73,7 +73,7 @@ class UrlServiceTest {
             var response = urlService.urlMinify(request, servletRequest);
 
             // Assert
-            var id = response.url().replace(Constants.BASE_URL, "");
+            var id = response.shortUrl().replace(Constants.BASE_URL, "");
             assertThat(id.length()).isBetween(MIN_ID_LENGTH, MAX_ID_LENGTH);
         }
     }

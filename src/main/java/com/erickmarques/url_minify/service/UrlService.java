@@ -35,7 +35,7 @@ public class UrlService {
 
         return MinifyUrlResponse
                 .builder()
-                .url(generateNewUrl(id, servletRequest))
+                .shortUrl(generateNewUrl(id, servletRequest))
                 .build();
     }
 

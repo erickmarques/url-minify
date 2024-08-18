@@ -72,6 +72,21 @@ public class UrlIntegrationTest {
                             .content(objectMapper.writeValueAsString(requestWithUrlIsBlank)))
                     .andExpect(status().isBadRequest());
         }
+
+        @Test
+        void shouldHandleExceptionWhenUrlIsInvalid() throws Exception {
+            // Arrange
+            var requestWithUrlIsBlank = MinifyUrlRequest
+                                        .builder()
+                                        .url("URL_INVALID")
+                                        .build();
+
+            // Act & Assert
+            mockMvc.perform(post(Constants.PATH_MINIFY)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(requestWithUrlIsBlank)))
+                    .andExpect(status().isBadRequest());
+        }
     }
 
     @Nested
